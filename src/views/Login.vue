@@ -1,15 +1,10 @@
 <template>
   <div>
     <div class="logo">
-      <img src="https://img.kaikeba.com/logo-new.png" alt />
+      <img src="https://img.kaikeba.com/logo-new.png" alt>
     </div>
     <!-- <cube-button>登录</cube-button> -->
-    <cube-form
-      :model="model"
-      :schema="schema"
-      @submit.prevent="handleLogin"
-      @validate="haneldValidate"
-    ></cube-form>
+    <cube-form :model="model" :schema="schema" @submit.prevent="handleLogin" @validate="haneldValidate"></cube-form>
   </div>
 </template>
 
@@ -17,27 +12,37 @@
 export default {
   data() {
     return {
-      model: { username: "", password: "" },
+      model: {
+        username: "",
+        passwd: ""
+      },
       schema: {
+        // 表单结构定义
         fields: [
+          // 字段数组
           {
             type: "input",
             modelKey: "username",
             label: "用户名",
-            props: { placeholder: "请输入用户名" },
+            props: {
+              placeholder: "请输入用户名"
+            },
             rules: {
+              // 校验规则
               required: true
             },
             trigger: "blur"
           },
           {
             type: "input",
-            modelKey: "password",
+            modelKey: "passwd",
             label: "密码",
             props: {
-              placeholder: "请输入密码",
               type: "password",
-              eye: { open: true }
+              placeholder: "请输入密码",
+              eye: {
+                open: true
+              }
             },
             rules: {
               required: true
@@ -50,33 +55,40 @@ export default {
           }
         ]
       }
-    }
+    };
   },
   methods: {
     handleLogin(e) {
-      console.log(e)
-      this.$store.dispatch('login', this.model)
-        .then(success => {
-          if (success) {
-            const path = this.$route.query.redirect || '/'
-            this.$router.push(path)
+      // 组织表单默认提交行为
+      // e.preventDefault();
+      // 登录请求
+    //   this.login(this.model) // 使用mapActions
+      this.$store
+        .dispatch("login", this.model)
+        .then(code => {
+          if (code) {
+            // 登录成功重定向
+            const path = this.$route.query.redirect || "/";
+            console.log('path', path)
+            this.$router.push(path);
           }
-        }).catch(error => {
-          console.log(error)  
+        })
+        .catch(error => {
+          // 有错误发生或者登录失败
           const toast = this.$createToast({
             time: 2000,
-            txt: '登录失败',
-            type: 'error'
-          })
+            txt: error.message || error.response.data.message || "登录失败",
+            type: "error"
+          });
           toast.show();
-        })
+        });
     },
     haneldValidate(ret) {
-      console.log(ret)
+      console.log(ret);
     }
   }
-}
+};
 </script>
 
-<style lang="scss" scoped>
+<style scoped>
 </style>

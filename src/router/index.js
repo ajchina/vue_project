@@ -11,13 +11,18 @@ const routes = [
     component: Home
   },
   {
+    path: '/cart',
+    name: 'cart',
+    component: () => import('../views/Cart.vue')
+  },
+  {
     path: '/about',
     name: 'about',
     meta: {
       auth: true
     },
     component: () => import(/* webpackChunkName: "about" */ '../views/About.vue')
-  }, 
+  },
   {
     path: '/login',
     name: 'login',
