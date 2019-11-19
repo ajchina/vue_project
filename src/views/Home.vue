@@ -7,19 +7,23 @@
         </router-link>
       </cube-slide-item>
     </cube-slide>
-    <goods-list :data="goods"></goods-list>
+    <goods-list :data="goods" @cartanim="$refs.ca.start($event)"></goods-list>
+    <!-- 动画组件 -->
+    <cart-anim ref="ca"></cart-anim>
   </div>
 </template>
 
 <script>
 import GoodsList from "@/components/GoodsList.vue";
+import CartAnim from '@/components/CartAnim'
 import shop from '@/serves/goods'
 // @ is an alias to /src
 
 export default {
   name: 'home',
   components: {
-    GoodsList
+    GoodsList,
+    CartAnim
   },
   computed: {
     goods() {

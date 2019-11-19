@@ -5,12 +5,21 @@
       <router-view class="child-view"/>
     </transition>
     </div>
-    <cube-tab-bar v-model="selectLabel" :data="tabs" @change="changeHandler"></cube-tab-bar>
+    <cube-tab-bar v-model="selectLabel" :data="tabs" @change="changeHandler">
+      <cube-tab v-for="(item,index) in tabs" :key="index" :icon="item.icon" :label="item.value">
+        <span class="badge" v-if="item.label=='Cart'">{{cartTotal}}</span>
+        <div>{{item.label}}</div>
+      </cube-tab>
+    </cube-tab-bar>
   </div>
 </template>
 
 <script>
+import {mapGetters} from 'vuex'
 export default {
+  computed: {
+    ...mapGetters(['cartTotal'])
+  },
   data() {
     return {
       selectLabel: "/", //默认标签页
