@@ -7,9 +7,9 @@
         </router-link>
       </cube-slide-item>
     </cube-slide>
-    <goods-list :data="goods" @cartanim="$refs.ca.start($event)"></goods-list>
+    <goods-list :data="goods" @cartanim="startCatrAnim"></goods-list>
     <!-- 动画组件 -->
-    <cart-anim ref="ca"></cart-anim>
+    <!-- <cart-anim ref="ca"></cart-anim> -->
   </div>
 </template>
 
@@ -22,8 +22,7 @@ import shop from '@/serves/goods'
 export default {
   name: 'home',
   components: {
-    GoodsList,
-    CartAnim
+    GoodsList
   },
   computed: {
     goods() {
@@ -46,6 +45,19 @@ export default {
         this.keys = keys
       }
     })
+  },
+  methods: {
+    startCatrAnim(el) {
+      /* const anim = this.$createCartAnim({
+        onTransitionend(){
+          anim.remove();
+        }
+      })
+      anim.start(el) */
+      const anim = this.$create(CartAnim)
+      anim.start(el);
+      anim.$on('transitionend', anim.remove)
+    }
   }
 }
 </script>
